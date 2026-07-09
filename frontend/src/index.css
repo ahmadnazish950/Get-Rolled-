@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+@theme {
+  /* --- Color tokens (film-lab palette) --- */
+  --color-ink: #121210;
+  --color-ink-soft: #1b1b17;
+  --color-ink-line: #33322c;
+  --color-paper: #ede7da;
+  --color-paper-dim: #cfc8b6;
+  --color-amber: #f5a623;
+  --color-amber-soft: #f7c877;
+  --color-safelight: #e8491d;
+  --color-sage: #7ea583;
+
+  /* --- Type tokens --- */
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* --- Motion --- */
+  --animate-typewriter: typewriter 1.4s steps(40, end);
+  --animate-flicker: flicker 2.6s ease-in-out infinite;
+  --animate-develop: develop 0.7s ease-out both;
+  --animate-scan: scan 1.8s linear infinite;
+}
+
+@keyframes typewriter {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.82;
+  }
+  50% {
+    opacity: 1;
+  }
+  52% {
+    opacity: 0.7;
+  }
+  55% {
+    opacity: 1;
+  }
+}
+
+@keyframes develop {
+  0% {
+    opacity: 0;
+    filter: brightness(2.4) contrast(0.6) saturate(0);
+    transform: translateY(10px) scale(0.98);
+  }
+  60% {
+    opacity: 1;
+    filter: brightness(1.1) contrast(1.05) saturate(0.7);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1) contrast(1) saturate(1);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: var(--color-amber);
+  color: var(--color-ink);
+}
+
+/* Visible keyboard focus everywhere, no exceptions */
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-line);
+  border-radius: 999px;
+}
+
+/* Sprocket-hole margin used on frame cards */
+.sprockets {
+  background-image: radial-gradient(
+    circle,
+    var(--color-ink) 3px,
+    transparent 3.5px
+  );
+  background-size: 100% 22px;
+  background-position: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
