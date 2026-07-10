@@ -26,9 +26,10 @@ async function RegisterController(req, res) {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
     res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-    });
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
 
     return res.status(201).json({
       message: "Account created successfully",
@@ -70,9 +71,10 @@ async function LoginController(req, res) {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
     res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-    });
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
 
     return res.status(200).json({
       message: "Logged in successfully",
@@ -97,7 +99,11 @@ async function MeController(req, res) {
 }
 
 async function LogoutController(req, res) {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
   return res.status(200).json({ message: "Logged out successfully" });
 }
 
