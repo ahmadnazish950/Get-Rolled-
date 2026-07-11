@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { User, Trash2, Share2, Check, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Trash2, Share2, Check, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import { usePosts } from "../context/PostContext";
@@ -15,6 +16,7 @@ export default function PostCard({ post, frameNumber, isNew }) {
 
   const label = String(frameNumber).padStart(3, "0");
   const username = post.user?.username || "unknown";
+  const initial = username[0]?.toUpperCase() || "?";
   const isOwner = post.user?._id === user?.id;
 
   async function handleDelete() {
@@ -55,7 +57,7 @@ export default function PostCard({ post, frameNumber, isNew }) {
 
   return (
     <article
-      className={`group relative overflow-hidden rounded-2xl border border-ink-line bg-ink-soft ${
+      className={`group relative overflow-hidden rounded-2xl border border-ink-line bg-ink-soft transition-shadow duration-300 hover:shadow-[0_24px_50px_-24px_rgba(0,0,0,0.55)] ${
         isNew ? "animate-develop" : ""
       }`}
     >
@@ -70,11 +72,11 @@ export default function PostCard({ post, frameNumber, isNew }) {
         <div className="min-w-0 flex-1">
           {/* meta row */}
           <div className="flex items-center justify-between gap-2 border-b border-ink-line px-4 py-2.5">
-            <div className="flex items-center gap-2 font-mono text-xs text-paper-dim">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-ink-line text-paper">
-                <User className="h-3 w-3" />
+            <div className="flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-amber/25 bg-amber/10 font-display text-[11px] font-semibold text-amber">
+                {initial}
               </span>
-              {username}
+              <span className="font-mono text-xs text-paper-dim">{username}</span>
             </div>
 
             <div className="flex items-center gap-1">
@@ -134,17 +136,24 @@ export default function PostCard({ post, frameNumber, isNew }) {
               } ${deleting ? "opacity-40" : ""}`}
               loading="lazy"
             />
-            {confirmingDelete && (
-              <div className="absolute inset-0 flex items-center justify-center bg-ink/70 px-6 text-center">
-                <p className="font-mono text-xs text-paper">
-                  {deleting ? "Deleting…" : "Delete this exposure? This can't be undone."}
-                </p>
-              </div>
-            )}
+            <AnimatePresence>
+              {confirmingDelete && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 flex items-center justify-center bg-ink/75 px-6 text-center backdrop-blur-[2px]"
+                >
+                  <p className="font-mono text-xs text-paper">
+                    {deleting ? "Deleting…" : "Delete this exposure? This can't be undone."}
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* caption */}
-          <div className="px-4 py-3">
+          <div className="px-4 py-3.5">
             <p
               className={`whitespace-pre-wrap font-mono text-sm leading-relaxed text-paper ${
                 isNew ? "animate-typewriter" : ""
@@ -158,4 +167,3 @@ export default function PostCard({ post, frameNumber, isNew }) {
     </article>
   );
 }
-

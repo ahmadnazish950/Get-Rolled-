@@ -34,6 +34,18 @@ export default function Feed() {
       <Navbar onUploadClick={() => setComposerOpen(true)} />
 
       <main className="mx-auto max-w-2xl px-4 py-8 sm:px-6">
+        <div className="mb-7 flex items-end justify-between">
+          <div>
+            <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-amber">Your roll</span>
+            <h1 className="mt-1.5 font-display text-2xl font-semibold tracking-tight text-paper">The feed</h1>
+          </div>
+          {!loadingFeed && !feedError && (
+            <span className="font-mono text-[11px] text-paper-dim">
+              {total} {total === 1 ? "frame" : "frames"}
+            </span>
+          )}
+        </div>
+
         {loadingFeed && (
           <div className="flex flex-col gap-6">
             <FrameSkeleton />

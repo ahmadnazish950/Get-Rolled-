@@ -145,6 +145,22 @@ export default function Composer({ open, onClose }) {
               onChange={(e) => acceptFile(e.target.files?.[0])}
             />
 
+            {file && !uploading && (
+              <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-ink-line bg-ink px-3 py-2">
+                <span className="truncate font-mono text-[11px] text-paper-dim">
+                  {file.name} · {(file.size / 1024 / 1024).toFixed(1)}MB
+                </span>
+                <button
+                  type="button"
+                  onClick={reset}
+                  aria-label="Remove selected photo"
+                  className="text-paper-dim transition-colors hover:text-safelight"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            )}
+
             <p className="mt-3 font-mono text-[11px] text-paper-dim">
               The caption is written by AI once you upload. Sarcasm may occur.
             </p>
