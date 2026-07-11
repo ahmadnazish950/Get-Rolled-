@@ -6,18 +6,28 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Feed from "./pages/Feed";
+import Landing from "./pages/Landing";
 import Loader from "./components/Loader";
+
+// "/" is smart: guests see the Landing page, logged-in users get bounced to /feed
+function HomeRoute() {
+  const { user, checkingSession } = useAuth();
+  if (checkingSession) return <Loader label="Checking your session…" />;
+  if (user) return <Navigate to="/feed" replace />;
+  return <Landing />;
+}
 
 function PublicOnlyRoute({ children }) {
   const { user, checkingSession } = useAuth();
   if (checkingSession) return <Loader label="Checking your session…" />;
-  if (user) return <Navigate to="/" replace />;
+  if (user) return <Navigate to="/feed" replace />;
   return children;
 }
 
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<HomeRoute />} />
       <Route
         path="/login"
         element={
@@ -35,7 +45,7 @@ function AppRoutes() {
         }
       />
       <Route element={<ProtectedRoute />}>
-        <Route path="/" element={<Feed />} />
+        <Route path="/feed" element={<Feed />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

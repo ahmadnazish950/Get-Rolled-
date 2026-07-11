@@ -25,7 +25,7 @@ export default function Register() {
     const result = await register(username.trim(), password);
     if (result.ok) {
       toast.success("Account created. Let's shoot.");
-      navigate("/", { replace: true });
+      navigate("/feed", { replace: true });
     } else {
       toast.error(result.message);
     }

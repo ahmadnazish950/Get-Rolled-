@@ -22,7 +22,7 @@ export default function Login() {
     const result = await login(username.trim(), password);
     if (result.ok) {
       toast.success("Welcome back.");
-      navigate(location.state?.from?.pathname || "/", { replace: true });
+     navigate(location.state?.from?.pathname || "/feed", { replace: true });
     } else {
       toast.error(result.message);
     }
