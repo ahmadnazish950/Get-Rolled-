@@ -156,7 +156,7 @@ export default function Landing() {
       {/* ================= NAV — half-width floating pill ================= */}
       <div className="fixed left-1/2 top-[18px] z-[100] w-[min(640px,calc(100%-32px))] -translate-x-1/2">
         <div
-          className={`flex items-center justify-between gap-2.5 rounded-full border border-ink-line bg-ink/70 py-2.5 pl-4 pr-2.5 backdrop-blur-xl transition-shadow ${
+          className={`flex items-center justify-between gap-2.5 rounded-full bg-ink/70 py-2.5 pl-4 pr-2.5 backdrop-blur-xl transition-shadow ${
             scrolled ? "shadow-[0_10px_32px_-12px_rgba(0,0,0,0.55)] border-[#43423a]" : ""
           }`}
         >
@@ -244,7 +244,7 @@ export default function Landing() {
 
             <Reveal delay={0.1}>
               <p className="mb-8 mt-5 max-w-[460px] text-[16.5px] leading-relaxed text-paper-dim">
-                Upload a photo. Gemini looks at it and writes a caption — dry, weird, occasionally unkind. ImageKit
+                Upload a photo. Gemini looks at it and writes a caption dry, weird, occasionally unkind. ImageKit
                 develops the print, MongoDB keeps the roll. Nothing about your feed is under your control, and
                 that&rsquo;s the point.
               </p>
@@ -320,11 +320,11 @@ export default function Landing() {
       </header>
 
       {/* ================= STACK MARQUEE ================= */}
-      <div id="stack" className="relative z-[2] border-y border-ink-line bg-ink-soft py-5.5">
+      <div id="stack" className="relative z-[2] bg-ink-soft py-5.5">
         <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
           <div className="roll-marquee flex w-max gap-13">
             {[...STACK, ...STACK].map((name, i) => (
-              <span key={i} className="flex items-center gap-2 whitespace-nowrap font-mono text-[12.5px] text-paper-dim">
+              <span key={i} className="flex items-center gap-2 whitespace-nowrap font-mono text-[20px] text-paper-dim">
                 <Aperture className="h-3.5 w-3.5 text-amber" strokeWidth={1.8} />
                 {name}
               </span>
