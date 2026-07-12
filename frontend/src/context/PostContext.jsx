@@ -66,6 +66,43 @@ export function PostProvider({ children }) {
     }
   }, []);
 
+  const toggleLike = useCallback(
+    async (postId, userId) => {
+      let reverted = false;
+
+      // optimistic update so the heart animation feels instant
+      setPosts((prev) =>
+        prev.map((p) => {
+          if (p._id !== postId) return p;
+          const currentLikes = p.likes || [];
+          const alreadyLiked = currentLikes.includes(userId);
+          const nextLikes = alreadyLiked
+            ? currentLikes.filter((id) => id !== userId)
+            : [...currentLikes, userId];
+          return { ...p, likes: nextLikes, likesCount: nextLikes.length };
+        })
+      );
+
+      try {
+        const { data } = await api.post(`/post/${postId}/like`);
+        setPosts((prev) =>
+          prev.map((p) => (p._id === postId ? { ...p, likesCount: data.likesCount } : p))
+        );
+        return { ok: true, liked: data.liked, likesCount: data.likesCount };
+      } catch (error) {
+        reverted = true;
+        // roll back the optimistic update by re-syncing with the server
+        fetchPosts();
+        return {
+          ok: false,
+          reverted,
+          message: error?.response?.data?.message || "Couldn't update the like. Try again.",
+        };
+      }
+    },
+    [fetchPosts]
+  );
+
   const value = useMemo(
     () => ({
       posts,
@@ -74,11 +111,23 @@ export function PostProvider({ children }) {
       fetchPosts,
       createPost,
       deletePost,
+      toggleLike,
       uploading,
       uploadProgress,
       lastCreatedId,
     }),
-    [posts, loadingFeed, feedError, fetchPosts, createPost, deletePost, uploading, uploadProgress, lastCreatedId]
+    [
+      posts,
+      loadingFeed,
+      feedError,
+      fetchPosts,
+      createPost,
+      deletePost,
+      toggleLike,
+      uploading,
+      uploadProgress,
+      lastCreatedId,
+    ]
   );
 
   return <PostContext.Provider value={value}>{children}</PostContext.Provider>;

@@ -1,6 +1,7 @@
 const express = require("express");
 const authroutes = require("./routes/auth.routes");
 const postroutes = require("./routes/post.routes");
+const commentroutes = require("./routes/comment.routes");
 const cookieParser = require("cookie-parser");
 const app = express();
 const cors = require("cors");
@@ -21,5 +22,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authroutes);
 app.use("/api/post", postroutes);
+app.use("/api/comment", commentroutes);
 
 module.exports = app;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
 import Composer from "../components/Composer";
 import PostCard from "../components/PostCard";
@@ -28,6 +28,17 @@ export default function Feed() {
   }, [fetchPosts]);
 
   const total = posts.length;
+
+  const bestPostId = useMemo(() => {
+    let best = null;
+    for (const p of posts) {
+      const count = p.likesCount ?? (p.likes || []).length;
+      if (count > 0 && (!best || count > best.count)) {
+        best = { id: p._id, count };
+      }
+    }
+    return best?.id || null;
+  }, [posts]);
 
   return (
     <div className="min-h-screen bg-ink">
@@ -79,6 +90,7 @@ export default function Feed() {
                 post={post}
                 frameNumber={total - index}
                 isNew={post._id === lastCreatedId}
+                isBestCaption={post._id === bestPostId}
               />
             ))}
           </div>
