@@ -9,6 +9,31 @@ import Comments from "./Comments";
 const HOLES = Array.from({ length: 8 });
 const BURST_ANGLES = [0, 60, 120, 180, 240, 300];
 
+function formatTimeDifference(date) {
+  const now = new Date();
+  const diffInSeconds = Math.floor((now - date) / 1000);
+
+  if (diffInSeconds < 60) {
+    return `${diffInSeconds} seconds ago`;
+  } else if (diffInSeconds < 3600) {
+    const minutes = Math.floor(diffInSeconds / 60);
+    return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+  } else if (diffInSeconds < 86400) {
+    const hours = Math.floor(diffInSeconds / 3600);
+    return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
+  } else if (diffInSeconds < 2592000) { // 30 days
+    const days = Math.floor(diffInSeconds / 86400);
+    return `${days} day${days !== 1 ? "s" : ""} ago`;
+  } else if (diffInSeconds < 31536000) { // 365 days
+    const months = Math.floor(diffInSeconds / 2592000);
+    return `${months} month${months !== 1 ? "s" : ""} ago`;
+  } else {
+    const years = Math.floor(diffInSeconds / 31536000);
+    return `${years} year${years !== 1 ? "s" : ""} ago`;
+  }
+}
+
+
 function LikeBurst() {
   return (
     <>
@@ -135,6 +160,9 @@ export default function PostCard({ post, frameNumber, isNew, isBestCaption }) {
 
             <div className="flex flex-none items-center gap-1">
               <span className="mr-1 font-mono text-[11px] tracking-widest text-amber">No. {label}</span>
+              <span className="font-mono text-[11px] text-paper-dim">
+                {formatTimeDifference(new Date(post.createdAt))}
+              </span>
 
               <button
                 onClick={handleShare}
