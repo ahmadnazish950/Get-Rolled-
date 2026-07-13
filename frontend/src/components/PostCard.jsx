@@ -166,7 +166,7 @@ export default function PostCard({ post, frameNumber, isNew, isBestCaption }) {
             <div className="flex flex-none items-center gap-1">
               <span className="mr-1 font-mono text-[11px] tracking-widest text-amber">No. {label}</span>
               <span className="font-mono text-[11px] text-paper-dim">
-                {formatTimeDifference(new Date(post.createdAt))}
+                {formatTimeDifference(post.createdAt)}
               </span>
 
               <button
