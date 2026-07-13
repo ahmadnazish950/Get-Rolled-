@@ -10,8 +10,14 @@ const HOLES = Array.from({ length: 8 });
 const BURST_ANGLES = [0, 60, 120, 180, 240, 300];
 
 function formatTimeDifference(date) {
+  const parsedDate = new Date(date);
+
+  if (!date || isNaN(parsedDate.getTime())) {
+    return "some time ago";
+  }
+
   const now = new Date();
-  const diffInSeconds = Math.floor((now - date) / 1000);
+  const diffInSeconds = Math.floor((now - parsedDate) / 1000);
 
   if (diffInSeconds < 60) {
     return `${diffInSeconds} seconds ago`;
@@ -21,10 +27,10 @@ function formatTimeDifference(date) {
   } else if (diffInSeconds < 86400) {
     const hours = Math.floor(diffInSeconds / 3600);
     return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
-  } else if (diffInSeconds < 2592000) { // 30 days
+  } else if (diffInSeconds < 2592000) {
     const days = Math.floor(diffInSeconds / 86400);
     return `${days} day${days !== 1 ? "s" : ""} ago`;
-  } else if (diffInSeconds < 31536000) { // 365 days
+  } else if (diffInSeconds < 31536000) {
     const months = Math.floor(diffInSeconds / 2592000);
     return `${months} month${months !== 1 ? "s" : ""} ago`;
   } else {
@@ -32,7 +38,6 @@ function formatTimeDifference(date) {
     return `${years} year${years !== 1 ? "s" : ""} ago`;
   }
 }
-
 
 function LikeBurst() {
   return (
